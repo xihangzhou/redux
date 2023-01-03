@@ -43,7 +43,7 @@ export default function compose<R>(
 
 export default function compose<R>(...funcs: Function[]): (...args: any[]) => R
 
-export default function compose(...funcs: Function[]) {
+export default function compose(...funcs: Function[]) { // 把一个函数数组组合成一个函数，这个组合的函数代表的含义是从最后一个函数开始执行，把函数的执行结果给前一个函数再依次执行
   if (funcs.length === 0) {
     // infer the argument type so it is usable in inference down the line
     return <T>(arg: T) => arg

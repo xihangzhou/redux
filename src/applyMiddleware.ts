@@ -77,7 +77,10 @@ export default function applyMiddleware(
         getState: store.getState,
         dispatch: (action, ...args) => dispatch(action, ...args)
       }
-      const chain = middlewares.map(middleware => middleware(middlewareAPI))
+      const chain = middlewares.map(middleware => middleware(middlewareAPI)) // chain中是每一个middleware的执行返回结果，为一个函数，函数的参数为store.dispatch
+      // 把原生的store.dispatch传给最后一个middleware的返回结果,从后往前执行所有的middleware的返回结果，并且后一个的返回值作为前一个的参数传入
+      // 最后返回的是第一个middlewares定义的新的dispatch函数，这个dispatch函数以第二个middlewares返回的dispatch为参数
+      // 所以applyMiddleware实际上也就是一个enhancer,它改写了dispacth方法给外部可以更方便的修改dispatch方法
       dispatch = compose<typeof dispatch>(...chain)(store.dispatch)
 
       return {
